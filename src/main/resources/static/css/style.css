@@ -2616,6 +2616,14 @@ h6 {
   padding-right: 40px;
   width: 100%; }
 
+.typeChoose {
+  font-size: 15px;
+  height: 50px;
+  border: solid 1.5px #f0e9ff;
+  border-radius: 10%;
+  background-color: white;
+}
+
 .form-select .nice-select .list {
   margin-top: 0;
   border: none;

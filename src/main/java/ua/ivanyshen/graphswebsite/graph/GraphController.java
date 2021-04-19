@@ -5,12 +5,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ua.ivanyshen.graphswebsite.user.User;
 
+import java.util.Arrays;
+
 /**
  * @author - Max Ivanyshen
  */
 
 @Controller
 public class GraphController {
+    public static Graph graph;
     private String websiteName = "Viz4Charts";
 
     /**
@@ -29,7 +32,24 @@ public class GraphController {
     @GetMapping("/create-charts")
     public String createCharts(Model model) {
         model.addAttribute("title", websiteName);
-        return "create-charts";
+        graph = new Graph();
+        model.addAttribute("chart", graph);
+        return "enter-rows";
+    }
+
+    @PostMapping("/create-charts")
+    public String chooseParamsAndValues(Model model, @ModelAttribute Graph graph) {
+        model.addAttribute("title", websiteName);
+        model.addAttribute("chart", graph);
+        return "chooseParamsAndValues";
+    }
+
+    @PostMapping("/editor")
+    public String chartEditor(Model model, @ModelAttribute Graph graph) {
+        model.addAttribute("title", websiteName);
+        model.addAttribute("chart", graph);
+        System.out.println(Arrays.toString(graph.getParams()));
+        return "chartEditor";
     }
 
     //Creates '/contact' route of website
@@ -58,6 +78,7 @@ public class GraphController {
     @PostMapping("/sign-up")
     public String newUser(@ModelAttribute User user, Model model) {
         model.addAttribute("user", user);
+        model.addAttribute("title", websiteName);
         return "showUser";
     }
 }
