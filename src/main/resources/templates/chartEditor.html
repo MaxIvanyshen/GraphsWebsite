@@ -54,7 +54,7 @@
 <!--================Hero Banner Area Start =================-->
 <section class="hero-banner d-flex align-items-center">
     <div class="container text-center">
-        <h2>Your Chart</h2>
+        <h2 th:text="'Your Chart: ' + ${chart.getName()}"></h2>
         <nav aria-label="breadcrumb" class="banner-breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/create-charts">Charts Creator</a></li>
@@ -70,7 +70,7 @@
 <section class="contact-section area-padding">
     <div class="container">
         <div class="d-none d-sm-block mb-5 pb-4">
-            <div class="chartContainer" style="width: 75% !important; height: 75% !important; margin-left: auto; margin-right: auto">
+            <div class="chartContainer" style="width: 60% !important; height: 60% !important; margin-left: auto; margin-right: auto">
                 <canvas id="myChart" width="50px" height="50px"></canvas>
             </div>
             <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.2/dist/chart.min.js"></script>
