@@ -1,15 +1,27 @@
 package ua.ivanyshen.graphswebsite.user;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.IndexDirection;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 /**
  * @author - Max Ivanyshen
  */
 
+@Document(collection = "users")
 public class User {
 
+    @Id
+    public int id;
     public String name;
+    @Indexed(unique = true, direction = IndexDirection.DESCENDING, dropDups = true)
     public String email;
     public String pass1;
     public String pass2;
+    public String mainPass;
+    public boolean premium;
+    public boolean enabled;
 
     public User() {}
 
@@ -18,6 +30,30 @@ public class User {
         this.email = email;
         this.pass1 = pass1;
         this.pass2 = pass2;
+    }
+
+    public boolean isPremium() {
+        return premium;
+    }
+
+    public void setPremium(boolean premium) {
+        this.premium = premium;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getMainPass() {
+        return mainPass;
+    }
+
+    public void setMainPass(String mainPass) {
+        this.mainPass = mainPass;
     }
 
     public String getName() {
@@ -57,8 +93,11 @@ public class User {
         return "User{" +
                 "name='" + name + '\'' +
                 ", email='" + email + '\'' +
-                ", pass1='" + pass1 + '\'' +
-                ", pass2='" + pass2 + '\'' +
+                ", pass='" + mainPass + '\'' +
                 '}';
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = true;
     }
 }

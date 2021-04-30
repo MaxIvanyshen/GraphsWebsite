@@ -117,7 +117,7 @@
                     <div class="row" style="margin-left: -4%;">
                         <div th:each="str, state: *{values}" class="col-sm-6">
                             <div class="form-group">
-                                <label style="color: black;" th:text="'Enter parameter '+${state.count} + ' name: '" for="${state.index}+value">Enter parameter:</label>
+                                <label style="color: black;" th:text="'Enter parameter '+${state.count} + ' value: '" for="${state.index}+value">Enter parameter:</label>
                                 <div class="form-group">
                                     <input class="form-control" name="${state.index}+param}" th:field="*{values[__${state.index}__]}"  id="${state.index}+value" type="text">
                                 </div>

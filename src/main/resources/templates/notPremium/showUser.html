@@ -74,10 +74,15 @@
             <div class="col-12">
                 <h2 class="contact-title">User</h2>
             </div>
-            <div class="col-12">
-                <h2 class="contact-title" th:text="${user.name}"></h2>
-                <h2 class="contact-title" th:text="${user.email}"></h2>
-            </div>
+            <form th:action="@{/deleteUser}" method="post" th:object="${user}">
+                <div class="col-12">
+                    <h2 class="contact-title" th:text="*{name}"></h2>
+                    <h2 class="contact-title" th:text="*{email}"></h2>
+                    <h2 class="contact-title" th:text="*{premium}"></h2>
+                </div>
+                <input type="submit" class="sign_up" value="Delete Account">
+            </form>
+
         </div>
     </div>
 </section>

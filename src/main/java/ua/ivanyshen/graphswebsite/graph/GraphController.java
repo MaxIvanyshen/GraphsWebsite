@@ -2,10 +2,11 @@ package ua.ivanyshen.graphswebsite.graph;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import ua.ivanyshen.graphswebsite.dao.userDAO;
 import ua.ivanyshen.graphswebsite.user.User;
-
-import java.util.Arrays;
 
 /**
  * @author - Max Ivanyshen
@@ -14,7 +15,9 @@ import java.util.Arrays;
 @Controller
 public class GraphController {
     public static Graph graph;
+    public static User currentUser = new User();
     private String websiteName = "Viz4Charts";
+    public static userDAO dao;
 
     /**
      * In line model.addAttribute("title", websiteName); we create a local variable for Thymeleaf
@@ -30,7 +33,10 @@ public class GraphController {
     @GetMapping("/")
     public String index(Model model) {
         model.addAttribute("title", websiteName);
-        return "index";
+        if(currentUser.isPremium())
+            return "premium/index";
+        else
+            return "notPremium/index";
     }
 
     //Creates '/create-charts' route of website with charts creator
@@ -39,7 +45,10 @@ public class GraphController {
         model.addAttribute("title", websiteName);
         graph = new Graph();
         model.addAttribute("chart", graph);
-        return "enter-rows";
+        if(currentUser.isPremium())
+            return "premium/enter-rows";
+        else
+            return "notPremium/enter-rows";
     }
 
     //Operates post request from 'create-charts' route: creates as
@@ -48,7 +57,10 @@ public class GraphController {
     public String chooseParamsAndValues(Model model, @ModelAttribute Graph graph) {
         model.addAttribute("title", websiteName);
         model.addAttribute("chart", graph);
-        return "chooseParamsAndValues";
+        if(currentUser.isPremium())
+            return "premium/chooseParamsAndValues";
+        else
+            return "notPremium/chooseParamsAndValues";
     }
 
     //Operates post request from 'create-charts' route: creates
@@ -57,24 +69,33 @@ public class GraphController {
     public String chartEditor(Model model, @ModelAttribute Graph graph) {
         model.addAttribute("title", websiteName);
         model.addAttribute("chart", graph);
-        return "chartEditor";
+        if(currentUser.isPremium())
+            return "premium/chartEditor";
+        else
+            return "notPremium/chartEditor";
     }
 
     //Creates '/contact' route of website with contact page
     @GetMapping("/contact")
     public String contact(Model model) {
         model.addAttribute("title", websiteName);
-        return "contact";
+        if(currentUser.isPremium())
+            return "premium/contact";
+        else
+            return "notPremium/contact";
     }
 
     //Creates '/premium' route of website with page for premium payment
     @GetMapping("/premium")
     public String premium(Model model) {
         model.addAttribute("title", websiteName);
-        return "premium";
+        if(currentUser.isPremium())
+            return "redirect:/";
+        else
+            return "notPremium/premium";
     }
 
-    //Creates '/sign-up' route of website with page for craeting an account
+    //Creates '/sign-up' route of website with page for creating an account
     @GetMapping("/sign-up")
     public String signUp(Model model) {
         model.addAttribute("title", websiteName);
@@ -82,12 +103,24 @@ public class GraphController {
         return "sign-up";
     }
 
-    //Processes '/sign-up' route data for registration
+//    Processes '/sign-up' route data for registration
     @PostMapping("/sign-up")
     public String newUser(@ModelAttribute User user, Model model) {
         model.addAttribute("user", user);
         model.addAttribute("title", websiteName);
-        return "showUser";
+        currentUser = user;
+        dao = new userDAO();
+        dao.save(user);
+        if(currentUser.isPremium())
+            return "premium/showUser";
+        else
+            return "notPremium/showUser";
+    }
+
+    @PostMapping("/deleteUser")
+    public String deleteUser() {
+        userDAO.deleteUser(currentUser);
+        return "redirect:/";
     }
 }
 
