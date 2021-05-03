@@ -5,12 +5,10 @@ import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.stereotype.Repository;
 import ua.ivanyshen.graphswebsite.user.User;
 
 import java.util.Random;
 
-@Repository
 public class userDAO {
     public static MongoOperations ops;
 
@@ -19,10 +17,12 @@ public class userDAO {
     }
 
     public static void save(User user) {
+        PasswordEncryptor encryptor = new PasswordEncryptor();
         Random r = new Random();
-        if(user.getPass1().equals(user.getPass2()))
-            user.setMainPass(user.getPass1());
-        user.setId(r.nextInt(10000000));
+        user.setMainPass(encryptor.encrypt(user.getPass1()));
+        user.setId(r.nextInt(1000000000));
+        user.setPass1("");
+        user.setPass2("");
         ops.insert(user);
     }
 
@@ -31,4 +31,7 @@ public class userDAO {
         ops.findAndRemove(q, User.class);
     }
 
+    public User findUserByEmail(String email) {
+        return ops.findOne(new Query(Criteria.where("email").is(email)), User.class);
+    }
 }

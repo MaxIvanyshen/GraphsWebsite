@@ -5,6 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import ua.ivanyshen.graphswebsite.dao.PasswordEncryptor;
 import ua.ivanyshen.graphswebsite.dao.userDAO;
 import ua.ivanyshen.graphswebsite.user.User;
 
@@ -18,6 +19,11 @@ public class GraphController {
     public static User currentUser = new User();
     private String websiteName = "Viz4Charts";
     public static userDAO dao;
+    public String message="";
+
+    {
+        dao = new userDAO();
+    }
 
     /**
      * In line model.addAttribute("title", websiteName); we create a local variable for Thymeleaf
@@ -99,6 +105,7 @@ public class GraphController {
     @GetMapping("/sign-up")
     public String signUp(Model model) {
         model.addAttribute("title", websiteName);
+        model.addAttribute("message", message);
         model.addAttribute("user", new User());
         return "sign-up";
     }
@@ -109,8 +116,18 @@ public class GraphController {
         model.addAttribute("user", user);
         model.addAttribute("title", websiteName);
         currentUser = user;
-        dao = new userDAO();
-        dao.save(user);
+        if(!user.getPass1().equals(user.getPass2())) {
+            message = "Passwords don't match";
+            return "redirect:/sign-up";
+        }
+        else if(!user.getEmail().matches("^(.+)@(.+)$")) {
+            message = "Invalid email";
+            return "redirect:/sign-up";
+        }
+        if(user.getPass1().equals(user.getPass2()) && user.getEmail().matches("^(.+)@(.+)$")) {
+            dao.save(user);
+            message="";
+        }
         if(currentUser.isPremium())
             return "premium/showUser";
         else
@@ -121,6 +138,42 @@ public class GraphController {
     public String deleteUser() {
         userDAO.deleteUser(currentUser);
         return "redirect:/";
+    }
+
+    @GetMapping("/login")
+    public String login(Model model) {
+        model.addAttribute("title", websiteName);
+        model.addAttribute("message", message);
+        model.addAttribute("user", new User());
+        return "login";
+    }
+
+    @PostMapping("/login")
+    public String logUserIn(Model model, @ModelAttribute User user) {
+        if(!user.getEmail().matches("^(.+)@(.+)$")) {
+            message="Invalid email";
+            return "redirect:/login";
+        }
+        else {
+            message="";
+            User neededUser = dao.findUserByEmail(user.getEmail());
+            if(neededUser==null) {
+                message="User does not exist. Do you want to sign up?";
+                return "redirect:/login";
+            }
+            else {
+                PasswordEncryptor encryptor = new PasswordEncryptor();
+                String pass = encryptor.decrypt(neededUser.getMainPass());
+                if(pass.equals(user.getMainPass())) {
+                    message="";
+                    return "redirect:/";
+                }
+                else {
+                    message="Invalid password or user does not exists";
+                    return "redirect:/login";
+                }
+            }
+        }
     }
 }
 

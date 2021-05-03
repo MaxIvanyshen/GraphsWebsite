@@ -21,7 +21,6 @@ public class User {
     public String pass2;
     public String mainPass;
     public boolean premium;
-    public boolean enabled;
 
     public User() {}
 
@@ -86,18 +85,5 @@ public class User {
 
     public void setPass2(String pass2) {
         this.pass2 = pass2;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", pass='" + mainPass + '\'' +
-                '}';
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = true;
     }
 }
