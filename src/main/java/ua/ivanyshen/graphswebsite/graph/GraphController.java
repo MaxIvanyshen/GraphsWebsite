@@ -2,9 +2,7 @@ package ua.ivanyshen.graphswebsite.graph;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import ua.ivanyshen.graphswebsite.dao.PasswordEncryptor;
 import ua.ivanyshen.graphswebsite.dao.userDAO;
 import ua.ivanyshen.graphswebsite.user.User;
@@ -16,7 +14,7 @@ import ua.ivanyshen.graphswebsite.user.User;
 @Controller
 public class GraphController {
     public static Graph graph;
-    public static User currentUser = new User();
+    public static User currentUser = null;
     private String websiteName = "Viz4Charts";
     public static userDAO dao;
     public String message="";
@@ -39,8 +37,13 @@ public class GraphController {
     @GetMapping("/")
     public String index(Model model) {
         model.addAttribute("title", websiteName);
-        if(currentUser.isPremium())
-            return "premium/index";
+        model.addAttribute("user", currentUser);
+        if(currentUser!=null) {
+            if(currentUser.isPremium())
+                return "premium/index";
+            else
+                return "notPremium/index";
+        }
         else
             return "notPremium/index";
     }
@@ -110,7 +113,7 @@ public class GraphController {
         return "sign-up";
     }
 
-//    Processes '/sign-up' route data for registration
+    //Processes '/sign-up' route data for registration
     @PostMapping("/sign-up")
     public String newUser(@ModelAttribute User user, Model model) {
         model.addAttribute("user", user);
@@ -128,10 +131,15 @@ public class GraphController {
             dao.save(user);
             message="";
         }
-        if(currentUser.isPremium())
-            return "premium/showUser";
-        else
-            return "notPremium/showUser";
+        return "redirect:/user/"+currentUser.getId();
+    }
+
+    @GetMapping("/user/{id}")
+    public String showUser(@PathVariable("id") int id, Model model) {
+        model.addAttribute("title", websiteName);
+        model.addAttribute("user", dao.findUserById(id));
+        System.out.println(dao.findUserById(id).getName());
+        return "notPremium/showUser";
     }
 
     @PostMapping("/deleteUser")
@@ -166,6 +174,8 @@ public class GraphController {
                 String pass = encryptor.decrypt(neededUser.getMainPass());
                 if(pass.equals(user.getMainPass())) {
                     message="";
+                    currentUser = neededUser;
+                    System.out.println(currentUser.getName());
                     return "redirect:/";
                 }
                 else {
