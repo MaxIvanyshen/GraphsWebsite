@@ -1,16 +1,12 @@
-package ua.ivanyshen.graphswebsite.graph;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+package ua.ivanyshen.graphswebsite;
 
 /**
  * @author - Max Ivanyshen
  */
 
 public class Graph {
-    public String type;
     public String name;
+    public String type;
     public int rowsNumber;
     public String id;
     public String[] colors;

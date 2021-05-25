@@ -35,7 +35,7 @@
                         <ul class="nav navbar-nav menu_nav ml-auto">
                             <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
                             <li class="nav-item"><a class="nav-link" href="/create-charts">Charts Creator</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/premium">Premium</a></li>
+                            <li th:if="${user == null || !user.premium}" class="nav-item"><a class="nav-link" href="/premium">Premium</a></li>
                             <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
                         </ul>
                     </div>

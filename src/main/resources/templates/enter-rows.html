@@ -7,14 +7,14 @@
     <!--    <link rel="icon" href="img/favicon.png" type="image/png">-->
     <title th:text="${title}"></title>
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
-    <link rel="stylesheet" th:href="@{/css/themify-icons.css}">
-    <link rel="stylesheet" th:href="@{/vendors/fontawesome/css/all.min.css}">
-    <link rel="stylesheet" th:href="@{/vendors/owl-carousel/owl.carousel.min.css}">
-    <link rel="stylesheet" th:href="@{/vendors/animate-css/animate.css}">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/themify-icons.css">
+    <link rel="stylesheet" href="vendors/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="vendors/owl-carousel/owl.carousel.min.css">
+    <link rel="stylesheet" href="vendors/animate-css/animate.css">
     <!-- main css -->
-    <link rel="stylesheet" th:href="@{/css/style.css}">
-    <link rel="stylesheet" th:href="@{/css/responsive.css}">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
 </head>
 <body>
 
@@ -35,8 +35,8 @@
                     <ul class="nav navbar-nav menu_nav ml-auto">
                         <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
                         <li class="nav-item"><a class="nav-link" href="/create-charts">Charts Creator</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/premium">Premium</a></li>
-                        <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                        <li th:if="${user == null || !user.premium}" class="nav-item"><a class="nav-link" href="/premium">Premium</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
                     </ul>
                 </div>
                 <div class="right-button">
@@ -55,11 +55,11 @@
 <!--================Hero Banner Area Start =================-->
 <section class="hero-banner d-flex align-items-center">
     <div class="container text-center">
-        <h2>Sign Up</h2>
+        <h2>Charts Creator</h2>
         <nav aria-label="breadcrumb" class="banner-breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Sign Up</li>
+                <li class="breadcrumb-item active" aria-current="page">Charts Creator</li>
             </ol>
         </nav>
     </div>
@@ -73,17 +73,23 @@
 
         <div class="row">
             <div class="col-12">
-                <h2 class="contact-title">User</h2>
+                <h2 class="contact-title">Creating Your Chart</h2>
             </div>
-            <form th:action="@{/deleteUser}" method="post" th:object="${user}">
-                <div class="col-12">
-                    <h2 class="contact-title" th:text="*{name}"></h2>
-                    <h2 class="contact-title" th:text="*{email}"></h2>
-                    <h2 class="contact-title" th:text="*{premium}"></h2>
-                </div>
-                <input type="submit" class="sign_up" value="Delete Account">
-            </form>
-
+            <div class="col-lg-8" >
+                <form class="form-contact contact_form"  th:action="@{/create-charts}" th:object="${chart}" method="post" id="contactForm" novalidate="novalidate">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label style="color: black;" for="rowsNumber">Enter number of rows in your chart: </label>
+                            <div class="form-group">
+                                <input class="form-control" style="width: 20%;" name="rowsNumber" id="rowsNumber" th:field="*{rowsNumber}" type="number" placeholder="Enter rows number">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group mt-3">
+                        <button type="submit" class="button button-contactForm">Next -></button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </section>
@@ -201,17 +207,17 @@
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script th:inline="javascript" src="js/jquery-2.2.4.min.js"></script>
-<script th:inline="javascript" src="js/popper.js"></script>
-<script th:inline="javascript" src="js/bootstrap.min.js"></script>
-<script th:inline="javascript" src="vendors/owl-carousel/owl.carousel.min.js"></script>
-<script th:inline="javascript" src="js/jquery.ajaxchimp.min.js"></script>
-<script th:inline="javascript" src="js/waypoints.min.js"></script>
-<script th:inline="javascript" src="js/mail-script.js"></script>
-<script th:inline="javascript" src="js/contact.js"></script>
-<script th:inline="javascript" src="js/jquery.form.js"></script>
-<script th:inline="javascript" src="js/jquery.validate.min.js"></script>
-<script th:inline="javascript" src="js/mail-script.js"></script>
-<script th:inline="javascript" src="js/theme.js"></script>
+<script src="js/jquery-2.2.4.min.js"></script>
+<script src="js/popper.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="vendors/owl-carousel/owl.carousel.min.js"></script>
+<script src="js/jquery.ajaxchimp.min.js"></script>
+<script src="js/waypoints.min.js"></script>
+<script src="js/mail-script.js"></script>
+<script src="js/contact.js"></script>
+<script src="js/jquery.form.js"></script>
+<script src="js/jquery.validate.min.js"></script>
+<script src="js/mail-script.js"></script>
+<script src="js/theme.js"></script>
 </body>
 </html>

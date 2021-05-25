@@ -7,14 +7,14 @@
   <!--    <link rel="icon" href="img/favicon.png" type="image/png">-->
   <title th:text="${title}"></title>
   <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="css/bootstrap.css">
-  <link rel="stylesheet" href="css/themify-icons.css">
-  <link rel="stylesheet" href="vendors/fontawesome/css/all.min.css">
-  <link rel="stylesheet" href="vendors/owl-carousel/owl.carousel.min.css">
-  <link rel="stylesheet" href="vendors/animate-css/animate.css">
+  <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
+  <link rel="stylesheet" th:href="@{/css/themify-icons.css}">
+  <link rel="stylesheet" th:href="@{/vendors/fontawesome/css/all.min.css}">
+  <link rel="stylesheet" th:href="@{/vendors/owl-carousel/owl.carousel.min.css}">
+  <link rel="stylesheet" th:href="@{/vendors/animate-css/animate.css}">
   <!-- main css -->
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <link rel="stylesheet" th:href="@{/css/responsive.css}">
 </head>
 <body>
 
@@ -35,12 +35,13 @@
           <ul class="nav navbar-nav menu_nav ml-auto">
             <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
             <li class="nav-item"><a class="nav-link" href="/create-charts">Charts Creator</a></li>
-            <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
+            <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
           </ul>
         </div>
         <div class="right-button">
           <ul>
             <li><a class="sign_up" href="/sign-up">Sign Up</a></li>
+            <li><a class="sign_up" href="/login">Log in</a></li>
           </ul>
         </div>
       </div>
@@ -53,11 +54,11 @@
 <!--================Hero Banner Area Start =================-->
 <section class="hero-banner d-flex align-items-center">
   <div class="container text-center">
-    <h2 th:text="'Your Chart: ' + ${chart.getName()}"></h2>
+    <h2 th:text="${user.name} + '’s saved charts'"></h2>
     <nav aria-label="breadcrumb" class="banner-breadcrumb">
       <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="/create-charts">Charts Creator</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Your Chart</li>
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Saved Charts</li>
       </ol>
     </nav>
   </div>
@@ -68,41 +69,15 @@
 <!-- ================ contact section start ================= -->
 <section class="contact-section area-padding">
   <div class="container">
-    <div class="d-none d-sm-block mb-5 pb-4">
-      <div class="chartContainer" style="width: 60% !important; height: 60% !important; margin-left: auto; margin-right: auto">
-        <canvas id="myChart" width="50px" height="50px"></canvas>
+
+    <div class="row">
+      <div class="col-12">
       </div>
-      <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.2/dist/chart.min.js"></script>
-      <script th:inline="javascript">
-                var ctx = document.getElementById('myChart').getContext('2d');
-                let labels = [[${chart.getParams()}]];
-                var myChart = new Chart(ctx, {
-                    type: [[${chart.getType()}]],
-                    data: {
-                        labels: [[${chart.getParams()}]],
-                        datasets: [{
-                            label: [[${chart.getName()}]],
-                            data: [[${chart.getValues()}]],
-                            backgroundColor: [
-                                "Red",
-                                "Black",
-                                "Green",
-                                "Blue",
-                                "Aquamarine"
-                            ],
-                            borderColor: [],
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        scales: {
-                            y: {
-                                beginAtZero: true
-                            }
-                        }
-                    }
-                });
-            </script>
+      <div class="col-12" th:each="chart : ${user.graphs}">
+        <h2 class="contact-title" th:text="${chart.name}"></h2>
+        <a th:href="@{/editor/{name}(name=${chart.name})}" class="sign_up">Edit</a>
+        <hr class="solid">
+      </div>
     </div>
   </div>
 </section>
@@ -112,6 +87,24 @@
 <footer class="footer-area">
   <div class="container">
     <div class="row">
+
+      <div class="col-lg-3 col-sm-6 mb-4 mb-xl-0 single-footer-widget">
+        <h4>About Us</h4>
+        <p>Heaven fruitful doesn't over lesser days appear creeping seasons so behold bearing days open</p>
+        <div class="footer-logo">
+          <img src="img/logo.png" alt="">
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-sm-6 mb-4 mb-xl-0 single-footer-widget">
+        <h4>Contact Info</h4>
+        <div class="footer-address">
+          <p>Address :Your address goes
+            here, your demo address.</p>
+          <span>Phone : +8880 44338899</span>
+          <span>Email : info@colorlib.com</span>
+        </div>
+      </div>
 
       <div class="col-lg-3 col-sm-6 mb-4 mb-xl-0 single-footer-widget">
         <h4>Important Link</h4>
@@ -202,17 +195,17 @@
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="js/jquery-2.2.4.min.js"></script>
-<script src="js/popper.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="vendors/owl-carousel/owl.carousel.min.js"></script>
-<script src="js/jquery.ajaxchimp.min.js"></script>
-<script src="js/waypoints.min.js"></script>
-<script src="js/mail-script.js"></script>
-<script src="js/contact.js"></script>
-<script src="js/jquery.form.js"></script>
-<script src="js/jquery.validate.min.js"></script>
-<script src="js/mail-script.js"></script>
-<script src="js/theme.js"></script>
+<script th:inline="javascript" src="js/jquery-2.2.4.min.js"></script>
+<script th:inline="javascript" src="js/popper.js"></script>
+<script th:inline="javascript" src="js/bootstrap.min.js"></script>
+<script th:inline="javascript" src="vendors/owl-carousel/owl.carousel.min.js"></script>
+<script th:inline="javascript" src="js/jquery.ajaxchimp.min.js"></script>
+<script th:inline="javascript" src="js/waypoints.min.js"></script>
+<script th:inline="javascript" src="js/mail-script.js"></script>
+<script th:inline="javascript" src="js/contact.js"></script>
+<script th:inline="javascript" src="js/jquery.form.js"></script>
+<script th:inline="javascript" src="js/jquery.validate.min.js"></script>
+<script th:inline="javascript" src="js/mail-script.js"></script>
+<script th:inline="javascript" src="js/theme.js"></script>
 </body>
 </html>

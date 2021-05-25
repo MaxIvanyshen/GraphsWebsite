@@ -4,6 +4,9 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.IndexDirection;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import ua.ivanyshen.graphswebsite.Graph;
+
+import java.util.ArrayList;
 
 /**
  * @author - Max Ivanyshen
@@ -21,14 +24,26 @@ public class User {
     public String pass2;
     public String mainPass;
     public boolean premium;
+    public ArrayList<Graph> graphs;
 
-    public User() {}
+    public User() {
+        graphs = new ArrayList<Graph>();
+    }
 
     public User(String name, String email, String pass1, String pass2) {
         this.name = name;
         this.email = email;
         this.pass1 = pass1;
         this.pass2 = pass2;
+        graphs = new ArrayList<Graph>();
+    }
+
+    public ArrayList<Graph> getGraphs() {
+        return graphs;
+    }
+
+    public void setGraphs(ArrayList<Graph> graphs) {
+        this.graphs = graphs;
     }
 
     public boolean isPremium() {

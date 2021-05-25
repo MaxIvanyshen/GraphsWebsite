@@ -2167,6 +2167,10 @@ h6 {
   position: relative;
   cursor: pointer; }
 
+hr.solid {
+  border-top: 3px solid #bbb;
+}
+
 .default-switch input {
   position: absolute;
   left: 0;

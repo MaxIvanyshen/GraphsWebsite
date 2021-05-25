@@ -35,7 +35,7 @@
                     <ul class="nav navbar-nav menu_nav ml-auto">
                         <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
                         <li class="nav-item"><a class="nav-link" href="/create-charts">Charts Creator</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/premium">Premium</a></li>
+                        <li th:if="${user == null || !user.premium}" class="nav-item"><a class="nav-link" href="/premium">Premium</a></li>
                         <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
                     </ul>
                 </div>
@@ -76,17 +76,70 @@
                 <h2 class="contact-title">Creating Your Chart</h2>
             </div>
             <div class="col-lg-8" >
-                <form class="form-contact contact_form"  th:action="@{/create-charts}" th:object="${chart}" method="post" id="contactForm" novalidate="novalidate">
+                <form class="form-contact contact_form"  th:action="@{/editor}" th:object="${chart}" method="post" id="contactForm" novalidate="novalidate">
+                    <h3 class="contact-title" style="font-size: 18px;">General</h3>
                     <div class="row">
-                        <div class="col-sm-6">
-                            <label style="color: black;" for="rowsNumber">Enter number of rows in your chart: </label>
+                        <div class="form-group">
+                            <label style="color: black;" for="name">Enter the name of the chart: </label>
+                            <br>
+                            <input class="form-control" name="name" th:field="*{name}"  id="name" type="text">
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="form-group">
+                            <!--                                <input class="form-control" style="width: 20%;" name="type" id="type" th:field="*{rowsNumber}" type="number" placeholder="Enter rows number">-->
+                            <label style="color: black;" for="type">Choose your chart type: </label>
+                            <br>
+                            <select class="typeChoose" name="type" th:field="*{type}" id="type">
+                                <option value="bar">Bar</option>
+                                <option value="pie">Pie</option>
+                                <option value="line">Line</option>
+                                <option value="radar">Radar</option>
+                                <option value="doughnut">Doughnut</option>
+                                <option value="polarArea">Polar Area</option>
+                                <option value="bubble">Bubble</option>
+                                <option value="scatter">Scatter</option>
+                            </select>
+                        </div>
+                    </div>
+                    <h3 class="contact-title" style="font-size: 18px;">Parameters</h3>
+                    <div class="row" style="margin-left: -4%;">
+                        <div th:each="str, state: *{params}" class="col-sm-6">
                             <div class="form-group">
-                                <input class="form-control" style="width: 20%;" name="rowsNumber" id="rowsNumber" th:field="*{rowsNumber}" type="number" placeholder="Enter rows number">
+                                <label style="color: black;" th:text="'Enter parameter '+${state.count} + ' name: '" for="${state.index}+param">Enter parameter:</label>
+                                <div class="form-group">
+                                    <input class="form-control" name="${state.index}+param}" th:field="*{params[__${state.index}__]}"  id="${state.index}+param" type="text">
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <h3 class="contact-title" style="font-size: 18px;">Values</h3>
+                    <div class="row" style="margin-left: -4%;">
+                        <div th:each="str, state: *{values}" class="col-sm-6">
+                            <div class="form-group">
+                                <label style="color: black;" th:text="'Enter parameter '+${state.count} + ' value: '" for="${state.index}+value">Enter value:</label>
+                                <div class="form-group">
+                                    <input class="form-control" name="${state.index}+param}" th:field="*{values[__${state.index}__]}"  id="${state.index}+value" type="text">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+<!--                    <div class="col-sm-6">-->
+<!--                        <div class="imgContainer" style="display: flex;">-->
+<!--                            <label style="color: black" for="pie">Pie Chart</label>-->
+<!--                            <img src="./img/pie.png" id="pie">-->
+<!--                            <label style="color: black" for="donut">Doughnut Chart</label>-->
+<!--                            <img src="./img/donut.png" id="donut">-->
+<!--                        </div>-->
+<!--                    </div>-->
                     <div class="form-group mt-3">
-                        <button type="submit" class="button button-contactForm">Next -></button>
+                        <button type="submit" class="button button-contactForm">Create -></button>
+                    </div>
+                    <div th:if="${user!=null}">
+                        <div th:if="${user.premium}}" class="form-group mt-3">
+                            <button type="submit" th:formaction="@{/saveChart}" class="button button-contactForm">Save</button>
+                        </div>
                     </div>
                 </form>
             </div>

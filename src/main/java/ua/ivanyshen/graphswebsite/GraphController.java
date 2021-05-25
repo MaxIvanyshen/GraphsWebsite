@@ -1,11 +1,17 @@
-package ua.ivanyshen.graphswebsite.graph;
+package ua.ivanyshen.graphswebsite;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import ua.ivanyshen.graphswebsite.dao.PasswordEncryptor;
+import ua.ivanyshen.graphswebsite.dao.graphDAO;
 import ua.ivanyshen.graphswebsite.dao.userDAO;
 import ua.ivanyshen.graphswebsite.user.User;
+
+import static ua.ivanyshen.graphswebsite.dao.userDAO.saveUser;
 
 /**
  * @author - Max Ivanyshen
@@ -15,12 +21,14 @@ import ua.ivanyshen.graphswebsite.user.User;
 public class GraphController {
     public static Graph graph;
     public static User currentUser = null;
-    private String websiteName = "Viz4Charts";
+    private final String websiteName = "Viz4Charts";
     public static userDAO dao;
+    public static graphDAO graphDAO;
     public String message="";
 
     {
         dao = new userDAO();
+        graphDAO = new graphDAO();
     }
 
     /**
@@ -31,21 +39,14 @@ public class GraphController {
      * model.addAttribute("chart", graph);
      * we create a local variable for Thymeleaf
      * called "chart" with our new chart or already created one
-     */
+     **/
 
     //Creates '/' route of website with home page
     @GetMapping("/")
     public String index(Model model) {
         model.addAttribute("title", websiteName);
         model.addAttribute("user", currentUser);
-        if(currentUser!=null) {
-            if(currentUser.isPremium())
-                return "premium/index";
-            else
-                return "notPremium/index";
-        }
-        else
-            return "notPremium/index";
+        return "index";
     }
 
     //Creates '/create-charts' route of website with charts creator
@@ -54,10 +55,7 @@ public class GraphController {
         model.addAttribute("title", websiteName);
         graph = new Graph();
         model.addAttribute("chart", graph);
-        if(currentUser.isPremium())
-            return "premium/enter-rows";
-        else
-            return "notPremium/enter-rows";
+        return "enter-rows";
     }
 
     //Operates post request from 'create-charts' route: creates as
@@ -66,42 +64,62 @@ public class GraphController {
     public String chooseParamsAndValues(Model model, @ModelAttribute Graph graph) {
         model.addAttribute("title", websiteName);
         model.addAttribute("chart", graph);
-        if(currentUser.isPremium())
-            return "premium/chooseParamsAndValues";
-        else
-            return "notPremium/chooseParamsAndValues";
+        model.addAttribute("user", currentUser);
+        return "chooseParamsAndValues";
     }
 
     //Operates post request from 'create-charts' route: creates
-    // chart with params and values we entered in the previous route
+    // a chart with params and values we entered in the previous route
     @PostMapping("/editor")
     public String chartEditor(Model model, @ModelAttribute Graph graph) {
         model.addAttribute("title", websiteName);
         model.addAttribute("chart", graph);
-        if(currentUser.isPremium())
-            return "premium/chartEditor";
-        else
-            return "notPremium/chartEditor";
+        return "chartEditor";
+    }
+
+    @GetMapping("/editor/{name}")
+    public String chartEditor(Model model, @PathVariable("name") String graphName) {
+        if(currentUser!=null) {
+            model.addAttribute("title", websiteName);
+            model.addAttribute("chart", graph);
+            model.addAttribute("user", currentUser);
+            model.addAttribute("chart", graphDAO.findByName(graphName, currentUser.getId()));
+            return "chartEditor";
+        }
+        return "redirect:/";
+    }
+
+    @PostMapping("/saveChart")
+    public String saveChart(Model model, @ModelAttribute Graph graph) {
+        if(!currentUser.isPremium())
+            return "redirect:/";
+        currentUser = dao.saveGraph(currentUser, graph);
+        return "redirect:/savedCharts/"+currentUser.getId();
+    }
+
+    @GetMapping("/savedCharts/{id}")
+    public String savedCharts(Model model, @PathVariable("id") int id) {
+        model.addAttribute("title", websiteName);
+        model.addAttribute("user", dao.findUserById(id));
+        System.out.println(dao.findUserById(id).getName());
+        return "savedCharts";
     }
 
     //Creates '/contact' route of website with contact page
     @GetMapping("/contact")
     public String contact(Model model) {
         model.addAttribute("title", websiteName);
-        if(currentUser.isPremium())
-            return "premium/contact";
-        else
-            return "notPremium/contact";
+        return "contact";
     }
 
     //Creates '/premium' route of website with page for premium payment
     @GetMapping("/premium")
     public String premium(Model model) {
         model.addAttribute("title", websiteName);
-        if(currentUser.isPremium())
-            return "redirect:/";
-        else
-            return "notPremium/premium";
+        model.addAttribute("user", currentUser);
+        if(currentUser == null || !currentUser.isPremium())
+            return "premium";
+        return "redirect:/";
     }
 
     //Creates '/sign-up' route of website with page for creating an account
@@ -128,7 +146,7 @@ public class GraphController {
             return "redirect:/sign-up";
         }
         if(user.getPass1().equals(user.getPass2()) && user.getEmail().matches("^(.+)@(.+)$")) {
-            dao.save(user);
+            saveUser(user);
             message="";
         }
         return "redirect:/user/"+currentUser.getId();
@@ -139,12 +157,13 @@ public class GraphController {
         model.addAttribute("title", websiteName);
         model.addAttribute("user", dao.findUserById(id));
         System.out.println(dao.findUserById(id).getName());
-        return "notPremium/showUser";
+        return "showUser";
     }
 
     @PostMapping("/deleteUser")
     public String deleteUser() {
         userDAO.deleteUser(currentUser);
+        currentUser=null;
         return "redirect:/";
     }
 
