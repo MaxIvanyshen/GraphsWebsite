@@ -24,7 +24,6 @@ public class userDAO {
         user.setId(r.nextInt(1000000000));
         user.setPass1("");
         user.setPass2("");
-        user.setPremium(true);
         ops.insert(user);
     }
 

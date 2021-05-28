@@ -98,8 +98,6 @@
                                 <option value="radar">Radar</option>
                                 <option value="doughnut">Doughnut</option>
                                 <option value="polarArea">Polar Area</option>
-                                <option value="bubble">Bubble</option>
-                                <option value="scatter">Scatter</option>
                             </select>
                         </div>
                     </div>
@@ -137,7 +135,7 @@
                         <button type="submit" class="button button-contactForm">Create -></button>
                     </div>
                     <div th:if="${user!=null}">
-                        <div th:if="${user.premium}}" class="form-group mt-3">
+                        <div th:if="${user.premium}" class="form-group mt-3">
                             <button type="submit" th:formaction="@{/saveChart}" class="button button-contactForm">Save</button>
                         </div>
                     </div>

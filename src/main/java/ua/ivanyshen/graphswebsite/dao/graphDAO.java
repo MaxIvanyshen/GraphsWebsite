@@ -27,4 +27,18 @@ public class graphDAO {
                 graph = list.get(i);
         return graph;
     }
+
+    public void addParam(Graph graph) {
+        String[] paramsNew = new String[graph.getParams().length+1];
+        for(int i=0; i<graph.getParams().length; ++i)
+            paramsNew[i] = graph.getParams()[i];
+        graph.setParams(paramsNew);
+        paramsNew[paramsNew.length-1] = "";
+
+        int[] valuesNew = new int[graph.getValues().length+1];
+        for(int i=0; i<graph.getValues().length; ++i)
+            valuesNew[i] = graph.getValues()[i];
+        graph.setValues(valuesNew);
+        valuesNew[valuesNew.length-1] = 0;
+    }
 }

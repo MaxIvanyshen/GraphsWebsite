@@ -204,5 +204,17 @@ public class GraphController {
             }
         }
     }
+
+    @PostMapping("/addParam")
+    public String addParam(Model model, @ModelAttribute Graph graph) {
+        String chartName = graph.getName();
+        String chartType = graph.getType();
+        graphDAO.addParam(graph);
+        model.addAttribute("paramNumber", graph.getParams().length-1);
+        graph.setName(chartName);
+        graph.setType(chartType);
+        model.addAttribute("chart", graph);
+        return "addParam";
+    }
 }
 
