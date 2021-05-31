@@ -12,6 +12,8 @@ public class Graph {
     public String[] colors;
     public String[] params;
     public int[] values;
+    public String sortType = null;
+    public int sortBy = 0; // 1 - from higher to lower; 2 - from lower to higher
 
     public Graph() {
         colors = new String[] {"Aquamarine", "Red", "Green"};
@@ -20,6 +22,22 @@ public class Graph {
     public Graph(String id, int[] values) {
         this.id = id;
         this.values = values;
+    }
+
+    public String getSortType() {
+        return sortType;
+    }
+
+    public void setSortType(String sortType) {
+        this.sortType = sortType;
+    }
+
+    public int getSortBy() {
+        return sortBy;
+    }
+
+    public void setSortBy(int sortBy) {
+        this.sortBy = sortBy;
     }
 
     public String[] getColors() {

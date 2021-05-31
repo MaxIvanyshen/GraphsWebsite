@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import ua.ivanyshen.graphswebsite.dao.PasswordEncryptor;
+import ua.ivanyshen.graphswebsite.dao.Sorter;
 import ua.ivanyshen.graphswebsite.dao.graphDAO;
 import ua.ivanyshen.graphswebsite.dao.userDAO;
 import ua.ivanyshen.graphswebsite.user.User;
@@ -72,8 +73,20 @@ public class GraphController {
     // a chart with params and values we entered in the previous route
     @PostMapping("/editor")
     public String chartEditor(Model model, @ModelAttribute Graph graph) {
+        Sorter sorter = new Sorter();
+        int sortBy = graph.getSortBy();
+        String sortType = graph.getSortType();
+
+        if(sortType!=null) {
+            if(sortType.equals("values"))
+                graph.setValues(sorter.quickSortValues(graph.getParams(), graph.getValues(), 0, graph.getValues().length-1));
+            if(sortType.equals("alphabet"))
+                graph.setParams(sorter.quickSortAlphabet(graph.getParams(), graph.getValues(), 0, graph.getParams().length-1));
+        }
+
         model.addAttribute("title", websiteName);
         model.addAttribute("chart", graph);
+        model.addAttribute("user", currentUser);
         return "chartEditor";
     }
 
@@ -215,6 +228,14 @@ public class GraphController {
         graph.setType(chartType);
         model.addAttribute("chart", graph);
         return "addParam";
+    }
+
+    @PostMapping("/sortChart")
+    public String sort(Model model, @ModelAttribute Graph graph) {
+        model.addAttribute("title", websiteName);
+        model.addAttribute("chart", graph);
+        model.addAttribute("user", currentUser);
+        return "sortPage";
     }
 }
 
