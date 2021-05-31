@@ -79,8 +79,10 @@ public class GraphController {
 
         if(sortType!=null) {
             if(sortType.equals("values"))
+                //my own quicksort func for sorting values and then params' names by values
                 graph.setValues(sorter.quickSortValues(graph.getParams(), graph.getValues(), 0, graph.getValues().length-1));
             if(sortType.equals("alphabet"))
+                //my own quicksort func for sorting params and then params' values by params
                 graph.setParams(sorter.quickSortAlphabet(graph.getParams(), graph.getValues(), 0, graph.getParams().length-1));
         }
 
@@ -90,32 +92,42 @@ public class GraphController {
         return "chartEditor";
     }
 
+    //one more editor page but only for premium accounts where you can edit your saved charts
     @GetMapping("/editor/{name}")
     public String chartEditor(Model model, @PathVariable("name") String graphName) {
-        if(currentUser!=null) {
+        if(currentUser!=null && currentUser.isPremium()) {
             model.addAttribute("title", websiteName);
             model.addAttribute("chart", graph);
             model.addAttribute("user", currentUser);
             model.addAttribute("chart", graphDAO.findByName(graphName, currentUser.getId()));
             return "chartEditor";
         }
-        return "redirect:/";
+        return "redirect:/"; // if user is null or user is not premium
     }
 
+    //function to save chart to your account (available with premium)
     @PostMapping("/saveChart")
     public String saveChart(Model model, @ModelAttribute Graph graph) {
         if(!currentUser.isPremium())
             return "redirect:/";
-        currentUser = dao.saveGraph(currentUser, graph);
-        return "redirect:/savedCharts/"+currentUser.getId();
+        else { //if user is premium
+            currentUser = dao.saveGraph(currentUser, graph);
+            return "redirect:/savedCharts/"+currentUser.getId();
+        }
     }
 
+    //page where you can see all your saved charts as a premium user
     @GetMapping("/savedCharts/{id}")
     public String savedCharts(Model model, @PathVariable("id") int id) {
-        model.addAttribute("title", websiteName);
-        model.addAttribute("user", dao.findUserById(id));
-        System.out.println(dao.findUserById(id).getName());
-        return "savedCharts";
+        if(currentUser==null || !currentUser.isPremium())
+            return "redirect:/";
+        else {  // if user is not null
+                // if user is premium
+            model.addAttribute("title", websiteName);
+            model.addAttribute("user", dao.findUserById(id));
+            System.out.println(dao.findUserById(id).getName());
+            return "savedCharts";
+        }
     }
 
     //Creates '/contact' route of website with contact page
@@ -132,7 +144,7 @@ public class GraphController {
         model.addAttribute("user", currentUser);
         if(currentUser == null || !currentUser.isPremium())
             return "premium";
-        return "redirect:/";
+        return "redirect:/"; // if user is premium
     }
 
     //Creates '/sign-up' route of website with page for creating an account
@@ -165,6 +177,7 @@ public class GraphController {
         return "redirect:/user/"+currentUser.getId();
     }
 
+    //User page
     @GetMapping("/user/{id}")
     public String showUser(@PathVariable("id") int id, Model model) {
         model.addAttribute("title", websiteName);
@@ -173,6 +186,7 @@ public class GraphController {
         return "showUser";
     }
 
+    //functions for deleting user
     @PostMapping("/deleteUser")
     public String deleteUser() {
         userDAO.deleteUser(currentUser);
@@ -180,6 +194,7 @@ public class GraphController {
         return "redirect:/";
     }
 
+    //login page
     @GetMapping("/login")
     public String login(Model model) {
         model.addAttribute("title", websiteName);
@@ -188,6 +203,7 @@ public class GraphController {
         return "login";
     }
 
+    //function where all the login data is being processed
     @PostMapping("/login")
     public String logUserIn(Model model, @ModelAttribute User user) {
         if(!user.getEmail().matches("^(.+)@(.+)$")) {
@@ -218,6 +234,7 @@ public class GraphController {
         }
     }
 
+    //page for adding a new parameter to the chart
     @PostMapping("/addParam")
     public String addParam(Model model, @ModelAttribute Graph graph) {
         String chartName = graph.getName();
@@ -230,6 +247,7 @@ public class GraphController {
         return "addParam";
     }
 
+    //page where you choose a type of the sorting
     @PostMapping("/sortChart")
     public String sort(Model model, @ModelAttribute Graph graph) {
         model.addAttribute("title", websiteName);
