@@ -78,12 +78,20 @@ public class GraphController {
         String sortType = graph.getSortType();
 
         if(sortType!=null) {
-            if(sortType.equals("values"))
+            if(sortType.equals("values")) {
                 //my own quicksort func for sorting values and then params' names by values
-                graph.setValues(sorter.quickSortValues(graph.getParams(), graph.getValues(), 0, graph.getValues().length-1));
-            if(sortType.equals("alphabet"))
+                if(sortBy==1)
+                    graph.setValues(sorter.quickSortValues(graph.getParams(), graph.getValues(), 0, graph.getValues().length-1));
+                if(sortBy==2)
+                    graph.setValues(sorter.quickSortValuesReverse(graph.getParams(), graph.getValues(), 0, graph.getValues().length-1));
+            }
+            if(sortType.equals("alphabet")) {
                 //my own quicksort func for sorting params and then params' values by params
-                graph.setParams(sorter.quickSortAlphabet(graph.getParams(), graph.getValues(), 0, graph.getParams().length-1));
+                if(sortBy==1)
+                    graph.setParams(sorter.quickSortAlphabet(graph.getParams(), graph.getValues(), 0, graph.getParams().length-1));
+                if(sortBy==2)
+                    graph.setParams(sorter.quickSortAlphabetReverse(graph.getParams(), graph.getValues(), 0, graph.getParams().length-1));
+            }
         }
 
         model.addAttribute("title", websiteName);
