@@ -5,6 +5,7 @@ import org.springframework.data.mongodb.core.index.IndexDirection;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import ua.ivanyshen.graphswebsite.Graph;
+import ua.ivanyshen.graphswebsite.Infographics;
 
 import java.util.ArrayList;
 
@@ -25,9 +26,11 @@ public class User {
     public String mainPass;
     public boolean premium;
     public ArrayList<Graph> graphs;
+    public ArrayList<Infographics> infographics;
 
     public User() {
         graphs = new ArrayList<Graph>();
+        infographics = new ArrayList<Infographics>();
     }
 
     public User(String name, String email, String pass1, String pass2) {
@@ -36,6 +39,14 @@ public class User {
         this.pass1 = pass1;
         this.pass2 = pass2;
         graphs = new ArrayList<Graph>();
+    }
+
+    public ArrayList<Infographics> getInfographics() {
+        return infographics;
+    }
+
+    public void setInfographics(ArrayList<Infographics> infographics) {
+        this.infographics = infographics;
     }
 
     public ArrayList<Graph> getGraphs() {

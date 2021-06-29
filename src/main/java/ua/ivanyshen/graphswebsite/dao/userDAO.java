@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import ua.ivanyshen.graphswebsite.Graph;
+import ua.ivanyshen.graphswebsite.Infographics;
 import ua.ivanyshen.graphswebsite.user.User;
 
 import java.util.Random;
@@ -30,6 +31,12 @@ public class userDAO {
     public static void deleteUser(User user) {
         Query q = new Query(Criteria.where("name").is(user.getName()));
         ops.findAndRemove(q, User.class);
+    }
+
+    public static User saveIg(User user, Infographics ig) {
+        user.getInfographics().add(ig);
+        ops.save(user);
+        return user;
     }
 
     public User findUserByEmail(String email) {

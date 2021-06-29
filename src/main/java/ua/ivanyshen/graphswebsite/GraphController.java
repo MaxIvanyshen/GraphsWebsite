@@ -2,6 +2,7 @@ package ua.ivanyshen.graphswebsite;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,6 +12,8 @@ import ua.ivanyshen.graphswebsite.dao.Sorter;
 import ua.ivanyshen.graphswebsite.dao.graphDAO;
 import ua.ivanyshen.graphswebsite.dao.userDAO;
 import ua.ivanyshen.graphswebsite.user.User;
+
+import java.nio.charset.StandardCharsets;
 
 import static ua.ivanyshen.graphswebsite.dao.userDAO.saveUser;
 
@@ -49,6 +52,9 @@ public class GraphController {
         model.addAttribute("user", currentUser);
         return "index";
     }
+
+
+    //START OF THE CHARTS PART
 
     //Creates '/create-charts' route of website with charts creator
     @GetMapping("/create-charts")
@@ -262,6 +268,115 @@ public class GraphController {
         model.addAttribute("chart", graph);
         model.addAttribute("user", currentUser);
         return "sortPage";
+    }
+
+    //END OF THE CHARTS PART
+
+
+    //START OF THE INFOGRAPHICS PART
+    @GetMapping("/create-infographics")
+    public String createInfographics(Model model) {
+        int infographicId=0;
+        model.addAttribute("title", websiteName);
+        model.addAttribute("user", currentUser);
+        model.addAttribute("infographics", new Infographics());
+        return "createInfographics";
+    }
+
+    @PostMapping("/create-infographics/{id}")
+    public String insertParamsAndValues(Model model, @ModelAttribute Infographics ig, @PathVariable("id") int id) {
+        model.addAttribute("title", websiteName);
+        model.addAttribute("user", currentUser);
+        String[] params, values, desc;
+        switch(id) {
+            case 1:
+                params = new String[6];
+                values = new String[6];
+                desc = new String[6];
+                for(int i=0; i<6; ++i) {
+                    params[i] = "";
+                    values[i] = "";
+                    desc[i] = "";
+                }
+                ig.setParams(params);
+                ig.setValues(values);
+                ig.setDesc(desc);
+                ig.setId(id);
+                model.addAttribute("ig", ig);
+                return "enterIgValues";
+            case 2:
+            case 3:
+                params = new String[4];
+                values = new String[4];
+                desc = new String[4];
+                for(int i=0; i<4; ++i) {
+                    params[i] = "";
+                    values[i] = "";
+                    desc[i] = "";
+                }
+                ig.setParams(params);
+                ig.setValues(values);
+                ig.setDesc(desc);
+                ig.setId(id);
+                model.addAttribute("ig", ig);
+                return "enterIgValues";
+            case 4:
+                params = new String[5];
+                values = new String[5];
+                desc = new String[5];
+                for(int i=0; i<5; ++i) {
+                    params[i] = "";
+                    values[i] = "";
+                    desc[i] = "";
+                }
+                ig.setParams(params);
+                ig.setValues(values);
+                ig.setDesc(desc);
+                ig.setId(id);
+                model.addAttribute("ig", ig);
+                return "enterIgValues";
+            case 5: return "infographics/infographics_5";
+            case 6: return "infographics/infographics_6";
+        }
+        return "redirect:/";
+    }
+
+    @PostMapping("/infographics-editor")
+    public String igEditor(Model model, @ModelAttribute Infographics ig) {
+        model.addAttribute("user" ,currentUser);
+        model.addAttribute("title", websiteName);
+        model.addAttribute("ig", ig);
+        return "igEditor";
+    }
+
+    @PostMapping("/saveInfographics")
+    public String enterNameForIg(Model model, @ModelAttribute Infographics ig) {
+        if(currentUser==null || !currentUser.isPremium())
+            return "redirect:/";
+        model.addAttribute("user" ,currentUser);
+        model.addAttribute("title", websiteName);
+        model.addAttribute("ig", ig);
+        return "chooseNameForIg";
+    }
+
+    @PostMapping("/save-infographics")
+    public String saveIg(Model model, @ModelAttribute Infographics ig) {
+        if(currentUser==null || !currentUser.isPremium())
+            return "redirect:/";
+        model.addAttribute("user" ,currentUser);
+        model.addAttribute("title", websiteName);
+        model.addAttribute("ig", ig);
+        currentUser = userDAO.saveIg(currentUser, ig);
+        return "redirect:/saved-infographics/"+currentUser.getId();
+    }
+
+    @GetMapping("/saved-infographics/{userId}")
+    public String savedIgs(Model model, @PathVariable("userId") int userId) throws MissingPathVariableException {
+        if(currentUser==null || !currentUser.isPremium() || userId!= currentUser.getId())
+            return "redirect:/";
+        model.addAttribute("user" ,currentUser);
+        model.addAttribute("title", websiteName);
+        return "savedIgs";
     }
 }
 

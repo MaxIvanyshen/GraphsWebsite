@@ -1,0 +1,718 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!--    <link rel="icon" href="img/favicon.png" type="image/png">-->
+  <title th:text="${title}"></title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
+  <link rel="stylesheet" th:href="@{/css/themify-icons.css}">
+  <link rel="stylesheet" th:href="@{/vendors/fontawesome/css/all.min.css}">
+  <link rel="stylesheet" th:href="@{/vendors/owl-carousel/owl.carousel.min.css}">
+  <link rel="stylesheet" th:href="@{/vendors/animate-css/animate.css}">
+  <!-- main css -->
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <link rel="stylesheet" th:href="@{/css/responsive.css}">
+</head>
+<body>
+
+<!--================Header Menu Area =================-->
+<header class="header_area">
+  <div class="main_menu">
+    <nav class="navbar navbar-expand-lg navbar-light">
+      <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <a class="navbar-brand logo_h" href="/" th:text="${title}"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+          <ul class="nav navbar-nav menu_nav ml-auto">
+            <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="/create-charts">Charts Creator</a></li>
+            <li th:if="${user == null || !user.premium}" class="nav-item"><a class="nav-link" href="/premium">Premium</a></li>
+            <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
+          </ul>
+        </div>
+        <div class="right-button">
+          <ul th:if="${user == null}">
+            <li><a class="sign_up" href="/sign-up">Sign Up</a></li>
+            <li><a class="sign_up" href="/login">Log in</a></li>
+          </ul>
+          <div th:if="${user != null}">
+            <a th:href="@{user/{id}(id=${user.id})}"><h2 style="margin-top: -5%" th:text="${user.name}"></h2></a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </div>
+</header>
+<!--================Header Menu Area =================-->
+
+
+<!--================Hero Banner Area Start =================-->
+<section class="hero-banner d-flex align-items-center">
+  <div class="container text-center">
+    <h2>Your Infographics: </h2>
+    <nav aria-label="breadcrumb" class="banner-breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/create-charts">Charts Creator</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Your Chart</li>
+      </ol>
+    </nav>
+  </div>
+</section>
+<!--================Hero Banner Area End =================-->
+
+
+<!-- ================ contact section start ================= -->
+<section class="contact-section area-padding">
+  <div class="container">
+    <div class="d-none d-sm-block mb-5 pb-4">
+      <div class="row">
+      </div>
+      <div class="row" >
+        <div class="graphic-container" style="position: relative; top: -15%">
+
+          <div class="center-circles-container">
+
+            <!--  single    -->
+            <div class="single">
+              <div class="circle one">
+                <div class="dot"></div>
+                <div class="icon">
+                  <i class="far fa-building">1</i>
+                </div>
+                <div class="content-container">
+                  <div class="line"></div>
+                  <h2 th:text="${ig.getParams()[0]}">1 Location</h2>
+                  <div class="content">
+                    <h3>option infographic</h3>
+                    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Error similique unde eius magnam, aliquam ducimus!</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--   double   -->
+            <div class="double">
+              <div class="circle two">
+                <div class="icon">
+                  <i class="far fa-building">2</i>
+                </div>
+                <div class="content-container">
+                  <div class="line"></div>
+                  <h2 th:text="${ig.params[1]}">2 Location</h2>
+                  <div class="content">
+                    <h3>option infographic</h3>
+                    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Error similique unde eius magnam, aliquam ducimus!</p>
+                  </div>
+                </div>
+              </div>
+              <div class="circle three">
+                <div class="icon">
+                  <i class="far fa-building">3</i>
+                </div>
+                <div class="content-container">
+                  <div class="line"></div>
+                  <h2 th:text="${ig.params[2]}">3 Location</h2>
+                  <div class="content">
+                    <h3>option infographic</h3>
+                    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Error similique unde eius magnam, aliquam ducimus!</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--   double   -->
+            <div class="double">
+              <div class="circle four">
+                <div class="dot"></div>
+                <div class="icon">
+                  <i class="far fa-building">4</i>
+                </div>
+                <div class="content-container">
+                  <div class="line"></div>
+                  <h2 th:text="${ig.params[3]}">4 Location</h2>
+                  <div class="content">
+                    <h3>option infographic</h3>
+                    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Error similique unde eius magnam, aliquam ducimus!</p>
+                  </div>
+                </div>
+              </div>
+              <div class="circle five">
+                <div class="icon">
+                  <i class="far fa-building">5</i>
+                </div>
+                <div class="content-container">
+                  <div class="line"></div>
+                  <h2 th:text="${ig.params[4]}">5 Location</h2>
+                  <div class="content">
+                    <h3>option infographic</h3>
+                    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Error similique unde eius magnam, aliquam ducimus!</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--  single    -->
+            <div class="single">
+              <div class="circle six">
+                <div class="dot"></div>
+                <div class="icon">
+                  <i class="far fa-building">6</i>
+                </div>
+                <div class="content-container">
+                  <div class="line"></div>
+                  <h2 th:text="${ig.params[5]}">6 Location</h2>
+                  <div class="content">
+                    <h3>option infographic</h3>
+                    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Error similique unde eius magnam, aliquam ducimus!</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <style>
+            * {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+:root {
+  --gap: -200px;
+  --circle-size: 200px;
+  --circle-size-small: 130px;
+  --color-1: #828f95;
+  --color-2: #9da6a5;
+  --color-3: #77ada7;
+  --color-4: #5aafb2;
+  --color-5: #39b3bb;
+  --color-6: #07bec2;
+}
+body {
+  font-family: 'Poppins', sans-serif;
+}
+.graphic-container {
+  width: 100%;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  margin: 100px 0;
+}
+.center-circles-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  grid-gap: 20px;
+  height: 100%;
+  width: 100%;
+}
+
+.single {
+  gap: 20px;
+}
+.double {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+.double:nth-child(even) {
+  flex-direction: column-reverse;
+}
+.circle {
+  width: var(--circle-size);
+  height: var(--circle-size);
+  background: #fff;
+  border-radius: 50%;
+
+  display: grid;
+  place-items: center;
+  position: relative;
+}
+
+.icon i {
+  font-size: 3rem;
+}
+.content-container {
+  position: absolute;
+  max-width: 200px;
+  min-width: 200px;
+  width: 100%;
+}
+.content p {
+  font-size: 12px;
+}
+.content-container h2 {
+  position: relative;
+  padding: 0 10px;
+}
+/* arrow heading border */
+.one .content-container h2::before,
+.one .content-container h2::after,
+.two .content-container h2::before,
+.two .content-container h2::after,
+.five .content-container h2::before,
+.five .content-container h2::after {
+  position: absolute;
+  content: '';
+  width: 2px;
+  height: 22px;
+  background: teal;
+  left: -6px;
+}
+.one .content-container h2::before,
+.two .content-container h2::before,
+.five .content-container h2::before {
+  top: -2px;
+  transform: rotate(30deg);
+}
+.one .content-container h2::after,
+.two .content-container h2::after,
+.five .content-container h2::after {
+  bottom: -2px;
+  transform: rotate(-30deg);
+}
+.three .content-container h2::before,
+.three .content-container h2::after,
+.four .content-container h2::before,
+.four .content-container h2::after,
+.six .content-container h2::before,
+.six .content-container h2::after {
+  position: absolute;
+  content: '';
+  width: 2px;
+  height: 22px;
+  background: teal;
+  right: -6px;
+}
+.three .content-container h2::before,
+.four .content-container h2::before,
+.six .content-container h2::before {
+  top: -2px;
+  transform: rotate(-30deg);
+}
+.three .content-container h2::after,
+.four .content-container h2::after,
+.six .content-container h2::after {
+  bottom: -2px;
+  transform: rotate(30deg);
+}
+
+/* different content elements */
+.two, .four {
+  width: var(--circle-size-small);
+  height: var(--circle-size-small);
+}
+.two i, .four i {
+  color: #fff;
+  font-size: 2.5rem;
+}
+.one .content-container {
+  left: 0;
+  bottom: var(--gap);
+  text-align: left;
+}
+.two .content-container {
+  left: 80px;
+  bottom: var(--gap);
+  text-align: left;
+}
+.three .content-container {
+  right: 200px;
+  top: var(--gap);
+  text-align: right;
+}
+.four .content-container {
+  right: 20px;
+  top: var(--gap);
+  text-align: right;
+}
+.five .content-container {
+  left: 200px;
+  bottom: var(--gap);
+  text-align: left;
+}
+.six .content-container {
+  left: 0;
+  top: var(--gap);
+  text-align: right;
+}
+
+/* lines */
+/* bottom layer */
+.one .line {
+  position: absolute;
+  width: 2px;
+  height: 170px;
+  background-color: var(--color-1);
+  top: -150px;
+  left: -30px;
+}
+.one .line::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 35px;
+  height: 2px;
+  background: var(--color-1);
+}
+.one .line::after,
+.two .line::after,
+.five .line::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 20px;
+  height: 2px;
+}
+.one .line::after {
+  background: var(--color-1);
+}
+.two .line::after {
+  background: var(--color-2);
+}
+.five .line::after {
+  background: var(--color-5);
+}
+.two .line {
+  position: absolute;
+  width: 2px;
+  height: 90px;
+  background-color: var(--color-2);
+  top: -70px;
+  left: -30px;
+}
+.five .line {
+  position: absolute;
+  width: 2px;
+  height: 110px;
+  background-color: var(--color-5);
+  top: -90px;
+  left: -30px;
+}
+/* top layer */
+.three .line {
+  position: absolute;
+  width: 2px;
+  height: 222px;
+  background-color: var(--color-3);
+  bottom: -100px;
+  right: -30px;
+}
+.three .line::after,
+.four .line::after,
+.six .line::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 20px;
+  height: 2px;
+}
+.three .line::after {
+  background: var(--color-3);
+}
+.four .line::after {
+  background: var(--color-4);
+}
+.six .line::after {
+  background: var(--color-6);
+}
+.four .line {
+  position: absolute;
+  width: 2px;
+  height: 222px;
+  background-color: var(--color-4);
+  bottom: -100px;
+  right: -30px;
+}
+.four .line::before {
+  content: '';
+  position: absolute;
+  right: 0px;
+  bottom: 0;
+  width: 20px;
+  height: 2px;
+  background: var(--color-4);
+}
+.six .line {
+  position: absolute;
+  width: 2px;
+  height: 282px;
+  background-color: var(--color-6);
+  bottom: -160px;
+  right: -30px;
+}
+.six .line::before {
+  content: '';
+  position: absolute;
+  right: 0px;
+  bottom: 0;
+  width: 35px;
+  height: 2px;
+  background: var(--color-6);
+}
+
+/* dots */
+.one .dot {
+  position: absolute;
+  top: 110px;
+  right: -30px;
+  width: 20px;
+  height: 20px;
+  background: var(--color-1);
+  border-radius: 50%;
+  box-shadow: -20px -110px 0 6px var(--color-1), -30px 80px 0 4px var(--color-1);
+}
+.four .dot {
+  position: absolute;
+  top: 130px;
+  left: 0px;
+  width: 20px;
+  height: 20px;
+  background: var(--color-4);
+  border-radius: 50%;
+  box-shadow: -22px -138px 0 10px var(--color-4), -70px 70px 0 0px var(--color-4);
+}
+.six .dot {
+  position: absolute;
+  top: -30px;
+  left: 10px;
+  width: 10px;
+  height: 10px;
+  background: var(--color-6);
+  border-radius: 50%;
+  box-shadow: -50px 50px 0 25px var(--color-6), 150px 250px 0 10px var(--color-6);
+}
+/* circle colors */
+.one {
+  box-shadow: inset 0 0 0 20px var(--color-1), inset 0px 0px 12px 20px #989898;
+}
+.two {
+  background-color: var(--color-2);
+  transform: translateX(-20px);
+}
+.three {
+  box-shadow: inset 0 0 0 20px var(--color-3), inset 0px 0px 12px 20px #989898;
+  transform: translateX(10px);
+}
+.four {
+  background-color: var(--color-4);
+  transform: translateX(-20px);
+}
+.five {
+  box-shadow: inset 0 0 0 20px var(--color-5), inset 0px 0px 12px 20px #989898;
+  transform: translateX(10px);
+}
+.six {
+  box-shadow: inset 0 0 0 20px var(--color-6), inset 0px 0px 12px 20px #989898;
+}
+
+
+/* h2 border colors */
+.one .content-container h2 {
+  border-top: 2px solid var(--color-1);
+  border-bottom: 2px solid var(--color-1);
+}
+.two .content-container h2 {
+  border-top: 2px solid var(--color-2);
+  border-bottom: 2px solid var(--color-2);
+}
+.three .content-container h2 {
+  border-top: 2px solid var(--color-3);
+  border-bottom: 2px solid var(--color-3);
+}
+.four .content-container h2 {
+  border-top: 2px solid var(--color-4);
+  border-bottom: 2px solid var(--color-4);
+}
+.five .content-container h2 {
+  border-top: 2px solid var(--color-5);
+  border-bottom: 2px solid var(--color-5);
+}
+.six .content-container h2 {
+  border-top: 2px solid var(--color-6);
+  border-bottom: 2px solid var(--color-6);
+}
+
+.one .content-container h2::before,
+.one .content-container h2::after {
+  background: var(--color-1);
+
+}
+.two .content-container h2::before,
+.two .content-container h2::after {
+  background: var(--color-2);
+
+}
+.five .content-container h2::before,
+.five .content-container h2::after {
+  background: var(--color-5);
+}
+
+.three .content-container h2::before,
+.three .content-container h2::after {
+  background: var(--color-3);
+
+}
+.four .content-container h2::before,
+.four .content-container h2::after {
+  background: var(--color-4);
+}
+.six .content-container h2::before,
+.six .content-container h2::after {
+ background: var(--color-6);
+}
+
+/* media */
+@media (max-width: 992px) {
+  .graphic-container {
+    margin: 50px 0;
+  }
+  .center-circles-container {
+    overflow: hidden;
+    overflow-x: scroll;
+    width: 1300px;
+  }
+  .double {
+    flex-direction: row;
+  }
+  .double:nth-child(even) {
+    flex-direction: row;
+  }
+  .two {
+    transform: translateX(0px);
+  }
+  .three {
+    transform: translateX(0px);
+  }
+  .four {
+    transform: translateX(0px);
+  }
+  .five {
+    transform: translateX(0px);
+  }
+}
+          </style>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================ contact section end ================= -->
+
+<!-- ================ start footer Area ================= -->
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+
+      <div class="col-lg-3 col-sm-6 mb-4 mb-xl-0 single-footer-widget">
+        <h4>Important Link</h4>
+        <ul>
+          <li><a href="#">WHMCS-bridge</a></li>
+          <li><a href="#">Search Domain</a></li>
+          <li><a href="#">My Account</a></li>
+          <li><a href="#">Shopping Cart</a></li>
+          <li><a href="#">Our Shop</a></li>
+        </ul>
+      </div>
+
+      <div class="col-lg-3 col-md-8 mb-4 mb-xl-0 single-footer-widget">
+        <h4>Newsletter</h4>
+        <p>Heaven fruitful doesn't over lesser in days. Appear creeping seasons deve behold bearing days open</p>
+
+        <div class="form-wrap" id="mc_embed_signup">
+          <form target="_blank" action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&amp;id=92a4423d01"
+                method="get">
+            <div class="input-group">
+              <input type="email" class="form-control" name="EMAIL" placeholder="Your Email Address" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Your Email Address '">
+              <div class="input-group-append">
+                <button class="btn click-btn" type="submit">
+                  <i class="fab fa-telegram-plane"></i>
+                </button>
+              </div>
+            </div>
+            <div style="position: absolute; left: -5000px;">
+              <input name="b_36c4fd991d266f23781ded980_aefe40901a" tabindex="-1" value="" type="text">
+            </div>
+
+            <div class="info"></div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+    <div class="footer-bottom row align-items-center text-center text-lg-left no-gutters">
+      <p class="footer-text m-0 col-lg-8 col-md-12"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+        Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+      <div class="col-lg-4 col-md-12 text-center text-lg-right footer-social">
+        <a href="#"><i class="ti-facebook"></i></a>
+        <a href="#"><i class="ti-twitter-alt"></i></a>
+        <a href="#"><i class="ti-dribbble"></i></a>
+        <a href="#"><i class="ti-linkedin"></i></a>
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- ================ End footer Area ================= -->
+
+
+<!--================Contact Success and Error message Area =================-->
+<div id="success" class="modal modal-message fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <i class="fas fa-times"></i>
+        </button>
+        <h2>Thank you</h2>
+        <p>Your message is successfully sent...</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modals error -->
+
+<div id="error" class="modal modal-message fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <i class="fas fa-times"></i>
+        </button>
+        <h2>Sorry !</h2>
+        <p> Something went wrong </p>
+      </div>
+    </div>
+  </div>
+</div>
+<!--================End Contact Success and Error message Area =================-->
+
+
+
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script th:inline="javascript" src="js/jquery-2.2.4.min.js"></script>
+<script th:inline="javascript" src="js/popper.js"></script>
+<script th:inline="javascript" src="js/bootstrap.min.js"></script>
+<script th:inline="javascript" src="vendors/owl-carousel/owl.carousel.min.js"></script>
+<script th:inline="javascript" src="js/jquery.ajaxchimp.min.js"></script>
+<script th:inline="javascript" src="js/waypoints.min.js"></script>
+<script th:inline="javascript" src="js/mail-script.js"></script>
+<script th:inline="javascript" src="js/contact.js"></script>
+<script th:inline="javascript" src="js/jquery.form.js"></script>
+<script th:inline="javascript" src="js/jquery.validate.min.js"></script>
+<script th:inline="javascript" src="js/mail-script.js"></script>
+<script th:inline="javascript" src="js/theme.js"></script>
+</body>
+</html>

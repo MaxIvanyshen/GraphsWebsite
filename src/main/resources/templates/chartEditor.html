@@ -133,39 +133,6 @@
                             <option value="polarArea">Polar Area</option>
                         </select>
                     </div>
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th>Params</th>
-                            <th>Values</th>
-
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>
-                                <div th:each="str, state: *{params}" class="col-sm-6">
-                                    <div class="form-group">
-                                        <label style="color: black;" th:text="${state.count}" for="${state.index}+param">Enter parameter:</label>
-                                        <div class="form-group">
-                                            <input class="form-control" name="${state.index}+param}" th:field="*{params[__${state.index}__]}"  id="${state.index}+param" type="text">
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div th:each="str, state: *{values}" class="col-sm-6">
-                                    <div class="form-group">
-                                        <label style="color: black;" th:text="${state.count}" for="${state.index}+value">Enter value:</label>
-                                        <div class="form-group">
-                                            <input class="form-control" name="${state.index}+param}" th:field="*{values[__${state.index}__]}"  id="${state.index}+value" type="text">
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
 
 
 
