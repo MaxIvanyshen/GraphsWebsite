@@ -123,6 +123,29 @@
                             </div>
                         </div>
                     </div>
+                    <div th:if="${user!=null && user.premium}">
+                        <h3 class="contact-title" style="font-size: 18px;">Colors</h3>
+                        <div class="row" style="margin-left: -4%;">
+                            <div th:each="str, state: *{colors}" class="col-sm-6">
+                                <div class="form-group">
+                                    <label style="color: black;" th:text="'Enter parameter '+${state.count} + ' color: '" for="${state.index}+color">Enter color:</label>
+                                    <div class="form-group">
+                                        <input class="form-control" name="${state.index}+color}" th:field="*{colors[__${state.index}__]}"  id="${state.index}+color" type="text">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+<!--                    <div class="row" style="margin-left: -4%;">-->
+<!--                        <div th:if="${user!=null && user.premium}" th:each="str, state: *{colors}" class="col-sm-6">-->
+<!--                            <div class="form-group">-->
+<!--                                <label style="color: black;" th:text="'Enter parameter '+${state.count} + ' color: '" for="${state.index}+color">Enter color rgb code:</label>-->
+<!--                                <div class="form-group">-->
+<!--                                    <input class="form-control" name="${state.index}+color}" th:field="*{colors[__${state.index}__]}"  id="${state.index}+color" type="text">-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
 <!--                    <div class="col-sm-6">-->
 <!--                        <div class="imgContainer" style="display: flex;">-->
 <!--                            <label style="color: black" for="pie">Pie Chart</label>-->
