@@ -1,5 +1,7 @@
 package ua.ivanyshen.graphswebsite;
 
+import java.util.Arrays;
+
 /**
  * @author - Max Ivanyshen
  */
@@ -99,5 +101,15 @@ public class Graph {
 
     public void setValues(int[] values) {
         this.values = values;
+    }
+
+    @Override
+    public String toString() {
+        return "Graph{" +
+                "name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                ", params=" + Arrays.toString(params) +
+                ", values=" + Arrays.toString(values) +
+                '}';
     }
 }
