@@ -63,6 +63,7 @@ public class GraphController {
     @GetMapping("/create-charts")
     public String createCharts(Model model) {
         model.addAttribute("title", websiteName);
+        model.addAttribute("user", currentUser);
         graph = new Graph();
         model.addAttribute("chart", graph);
         return "enter-rows";
@@ -256,6 +257,7 @@ public class GraphController {
     public String addParam(Model model, @ModelAttribute Graph graph) {
         String chartName = graph.getName();
         String chartType = graph.getType();
+        model.addAttribute("user", currentUser);
         graphDAO.addParam(graph);
         model.addAttribute("paramNumber", graph.getParams().length-1);
         graph.setName(chartName);

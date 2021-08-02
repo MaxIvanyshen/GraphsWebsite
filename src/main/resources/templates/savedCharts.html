@@ -35,14 +35,19 @@
           <ul class="nav navbar-nav menu_nav ml-auto">
             <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
             <li class="nav-item"><a class="nav-link" href="/create-charts">Charts Creator</a></li>
-            <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+            <li th:if="${user != null && user.premium}" class="nav-item"><a class="nav-link" href="/create-infographics">Infographics Creator</a></li>
+            <li th:if="${user == null || !user.premium}" class="nav-item"><a class="nav-link" href="/premium">Premium</a></li>
+            <li class="nav-item"><a class="nav-link" id = "contactsText" href="/contact">Contact</a></li>
           </ul>
         </div>
         <div class="right-button">
-          <ul>
+          <ul th:if="${user == null}">
             <li><a class="sign_up" href="/sign-up">Sign Up</a></li>
             <li><a class="sign_up" href="/login">Log in</a></li>
           </ul>
+          <div th:if="${user != null}">
+            <a th:href="@{user/{id}(id=${user.id})}"><h2 style="margin-top: -5%" th:text="${user.name}"></h2></a>
+          </div>
         </div>
       </div>
     </nav>
