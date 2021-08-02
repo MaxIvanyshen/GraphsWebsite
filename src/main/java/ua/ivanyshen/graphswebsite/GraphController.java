@@ -11,6 +11,7 @@ import ua.ivanyshen.graphswebsite.dao.PasswordEncryptor;
 import ua.ivanyshen.graphswebsite.dao.Sorter;
 import ua.ivanyshen.graphswebsite.dao.graphDAO;
 import ua.ivanyshen.graphswebsite.dao.userDAO;
+import ua.ivanyshen.graphswebsite.dao.IG_DAO;
 import ua.ivanyshen.graphswebsite.user.User;
 
 import java.nio.charset.StandardCharsets;
@@ -28,11 +29,13 @@ public class GraphController {
     private final String websiteName = "Viz4Charts";
     public static userDAO dao;
     public static graphDAO graphDAO;
+    public static IG_DAO IG_DAO;
     public String message="";
 
     {
         dao = new userDAO();
         graphDAO = new graphDAO();
+        IG_DAO = new IG_DAO();
     }
 
     /**
@@ -276,11 +279,14 @@ public class GraphController {
     //START OF THE INFOGRAPHICS PART
     @GetMapping("/create-infographics")
     public String createInfographics(Model model) {
-        int infographicId=0;
-        model.addAttribute("title", websiteName);
-        model.addAttribute("user", currentUser);
-        model.addAttribute("infographics", new Infographics());
-        return "createInfographics";
+        if(currentUser!=null && currentUser.premium) {
+            int infographicId=0;
+            model.addAttribute("title", websiteName);
+            model.addAttribute("user", currentUser);
+            model.addAttribute("infographics", new Infographics());
+            return "createInfographics";
+        }
+        return "redirect:/";
     }
 
     @PostMapping("/create-infographics/{id}")
@@ -288,65 +294,86 @@ public class GraphController {
         model.addAttribute("title", websiteName);
         model.addAttribute("user", currentUser);
         String[] params, values, desc;
-        switch(id) {
-            case 1:
-                params = new String[6];
-                values = new String[6];
-                desc = new String[6];
-                for(int i=0; i<6; ++i) {
-                    params[i] = "";
-                    values[i] = "";
-                    desc[i] = "";
-                }
-                ig.setParams(params);
-                ig.setValues(values);
-                ig.setDesc(desc);
-                ig.setId(id);
-                model.addAttribute("ig", ig);
-                return "enterIgValues";
-            case 2:
-            case 3:
-                params = new String[4];
-                values = new String[4];
-                desc = new String[4];
-                for(int i=0; i<4; ++i) {
-                    params[i] = "";
-                    values[i] = "";
-                    desc[i] = "";
-                }
-                ig.setParams(params);
-                ig.setValues(values);
-                ig.setDesc(desc);
-                ig.setId(id);
-                model.addAttribute("ig", ig);
-                return "enterIgValues";
-            case 4:
-                params = new String[5];
-                values = new String[5];
-                desc = new String[5];
-                for(int i=0; i<5; ++i) {
-                    params[i] = "";
-                    values[i] = "";
-                    desc[i] = "";
-                }
-                ig.setParams(params);
-                ig.setValues(values);
-                ig.setDesc(desc);
-                ig.setId(id);
-                model.addAttribute("ig", ig);
-                return "enterIgValues";
-            case 5: return "infographics/infographics_5";
-            case 6: return "infographics/infographics_6";
+        if(currentUser!=null && currentUser.premium) {
+            switch (id) {
+                case 1:
+                    params = new String[6];
+                    values = new String[6];
+                    desc = new String[6];
+                    for (int i = 0; i < 6; ++i) {
+                        params[i] = "";
+                        values[i] = "";
+                        desc[i] = "";
+                    }
+                    ig.setParams(params);
+                    ig.setValues(values);
+                    ig.setDesc(desc);
+                    ig.setId(id);
+                    model.addAttribute("ig", ig);
+                    return "enterIgValues";
+                case 2:
+                case 3:
+                    params = new String[4];
+                    values = new String[4];
+                    desc = new String[4];
+                    for (int i = 0; i < 4; ++i) {
+                        params[i] = "";
+                        values[i] = "";
+                        desc[i] = "";
+                    }
+                    ig.setParams(params);
+                    ig.setValues(values);
+                    ig.setDesc(desc);
+                    ig.setId(id);
+                    model.addAttribute("ig", ig);
+                    return "enterIgValues";
+                case 4:
+                    params = new String[5];
+                    values = new String[5];
+                    desc = new String[5];
+                    for (int i = 0; i < 5; ++i) {
+                        params[i] = "";
+                        values[i] = "";
+                        desc[i] = "";
+                    }
+                    ig.setParams(params);
+                    ig.setValues(values);
+                    ig.setDesc(desc);
+                    ig.setId(id);
+                    model.addAttribute("ig", ig);
+                    return "enterIgValues";
+                case 5:
+                    return "infographics/infographics_5";
+                case 6:
+                    return "infographics/infographics_6";
+            }
         }
         return "redirect:/";
     }
 
     @PostMapping("/infographics-editor")
     public String igEditor(Model model, @ModelAttribute Infographics ig) {
-        model.addAttribute("user" ,currentUser);
-        model.addAttribute("title", websiteName);
-        model.addAttribute("ig", ig);
-        return "igEditor";
+        if(currentUser!=null && currentUser.premium) {
+            model.addAttribute("user" ,currentUser);
+            model.addAttribute("title", websiteName);
+            model.addAttribute("ig", ig);
+            return "igEditor";
+        }
+        return "redirect:/";
+    }
+
+    @GetMapping("/infographics-editor/{name}")
+    public String igEditorPremium(Model model, @PathVariable("name") String name) {
+        if(currentUser!=null && currentUser.premium) {
+            Infographics ig = IG_DAO.findIgByName(currentUser, name);
+            if(ig==null)
+                return "redirect:/saved-infographics/"+currentUser.getId();
+            model.addAttribute("user" ,currentUser);
+            model.addAttribute("title", websiteName);
+            model.addAttribute("ig", ig);
+            return "igEditor";
+        }
+        return "redirect:/";
     }
 
     @PostMapping("/saveInfographics")

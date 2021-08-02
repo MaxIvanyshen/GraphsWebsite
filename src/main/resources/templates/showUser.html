@@ -81,6 +81,7 @@
                     <h2 class="contact-title" th:text="*{email}"></h2>
                     <h2 class="contact-title" th:text="*{premium}"></h2>
                     <a th:href="@{/savedCharts/{id}(id=${user.id})}"><h2 class="contact-title">Saved Charts</h2></a>
+                    <a th:href="@{/saved-infographics/{id}(id=${user.id})}"><h2 class="contact-title">Saved Infographics</h2></a>
                 </div>
                 <input type="submit" class="sign_up" value="Delete Account">
             </form>

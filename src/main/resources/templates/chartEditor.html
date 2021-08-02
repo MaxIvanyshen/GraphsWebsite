@@ -74,7 +74,7 @@
 <section class="contact-section area-padding">
     <div class="container">
         <div class="d-none d-sm-block mb-5 pb-4">
-            <div class="row" th:if="${user==null || !user.premium}">
+            <div class="row">
                 <div class="chartContainer" style="width: 60% !important; height: 60% !important; margin-left: auto; margin-right: auto">
                     <canvas id="myChart" width="50px" height="50px"></canvas>
                 </div>
@@ -90,36 +90,6 @@
                             label: [[${chart.getName()}]],
                             data: [[${chart.getValues()}]],
                             backgroundColor: ['Red', 'Green', 'Blue', 'Yellow', 'White', 'Black'],
-                            borderColor: [],
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        scales: {
-                            y: {
-                                beginAtZero: true
-                            }
-                        }
-                    }
-                });
-            </script>
-            </div>
-            <div class="row" th:if="${user!=null && user.premium}">
-                <div class="chartContainer" style="width: 60% !important; height: 60% !important; margin-left: auto; margin-right: auto">
-                    <canvas id="myPremiumChart" width="50px" height="50px"></canvas>
-                </div>
-                <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.2/dist/chart.min.js"></script>
-                <script th:inline="javascript">
-                var ctx = document.getElementById('myChart').getContext('2d');
-                let labels = [[${chart.getParams()}]];
-                var myChart = new Chart(ctx, {
-                    type: [[${chart.getType()}]],
-                    data: {
-                        labels: [[${chart.getParams()}]],
-                        datasets: [{
-                            label: [[${chart.getName()}]],
-                            data: [[${chart.getValues()}]],
-                            backgroundColor: [[${chart.getColors()}]],
                             borderColor: [],
                             borderWidth: 1
                         }]
@@ -236,7 +206,7 @@
                         <button type="submit" class="button button-contactForm">Update -></button>
                     </div>
                     <div th:if="${user!=null}">
-                        <div th:if="${user.premium}}" class="form-group mt-3">
+                        <div th:if="${user.premium}" class="form-group mt-3">
                             <button type="submit" th:formaction="@{/saveChart}" class="button button-contactForm">Save</button>
                         </div>
                     </div>

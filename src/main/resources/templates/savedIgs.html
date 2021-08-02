@@ -72,7 +72,7 @@
       </div>
       <div class="col-12" th:each="ig : ${user.infographics}">
         <h2 class="contact-title" th:text="${ig.name}"></h2>
-        <a th:href="@{/editor/{name}(name=${ig.name})}" class="sign_up">Edit</a>
+        <a th:href="@{/infographics-editor/{name}(name=${ig.name})}" class="sign_up">Edit</a>
         <hr class="solid">
       </div>
     </div>

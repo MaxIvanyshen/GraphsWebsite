@@ -9,7 +9,7 @@ public class Graph {
     public String type;
     public int rowsNumber;
     public String id;
-    public String[] colors;
+    public String[] colors=null;
     public String[] params;
     public int[] values;
     public String sortType = null;
